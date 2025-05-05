@@ -6,6 +6,11 @@ import {
   createCard,
   deleteCard
 } from "./components/card.js";
+import {
+  initialCards
+} from "./components/cards.js";
+import "./pages/index.css";
+
 const placesList = document.querySelector(".places__list");
 
 const editPopup = document.querySelector(".popup_type_edit");
@@ -63,6 +68,13 @@ closeAddButton.addEventListener("click", () => {
   closeModal(addCardPopup);
 });
 
+function showImgPopup(evt) {
+  openModal(imgPopup);
+  zoomedPopupImage.setAttribute("src", evt.target.src);
+  zoomedPopupImage.setAttribute("alt", evt.target.alt);
+  imgPopupCaption.textContent = evt.target.alt;
+};
+
 function handleAddForm(evt) {
   evt.preventDefault();
   const cardValue = cardInput.value;
@@ -74,6 +86,7 @@ function handleAddForm(evt) {
       link: linkValue,
       likes: []
   };
+  
   const newCardElement = createCard(newCardData, deleteCard, showImgPopup);
   placesList.prepend(newCardElement);
   addSaveButton.disabled = true;
@@ -93,9 +106,15 @@ closePhotoButton.addEventListener("click", () => {
   closeModal(imgPopup);
 });
 
-export function showImgPopup(evt) {
-  openModal(imgPopup);
-  zoomedPopupImage.setAttribute("src", evt.target.src);
-  zoomedPopupImage.setAttribute("alt", evt.target.alt);
-  imgPopupCaption.textContent = evt.target.alt;
-};
+export function likeCard(likeButton) {
+  likeButton.classList.toggle("card__like-button_is-active");
+}
+
+function renderCards(cards) {
+  cards.forEach(cardData => {
+      const cardElement = createCard(cardData, deleteCard, likeCard, showImgPopup);
+      placesList.append(cardElement);
+  });
+}
+
+renderCards(initialCards);

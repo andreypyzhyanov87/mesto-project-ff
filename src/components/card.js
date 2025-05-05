@@ -1,10 +1,3 @@
-import {
-  showImgPopup
-} from '../index.js';
-export function likeCard(likeButton) {
-  likeButton.classList.toggle("card__like-button_is-active");
-}
-
 export function createCard(cardData, handleDelete, likeCard, showImgPopup) {
   const cardTemplate = document.getElementById('card-template').content;
   const cardElement = cardTemplate.cloneNode(true).querySelector('.card');
@@ -31,13 +24,3 @@ export function createCard(cardData, handleDelete, likeCard, showImgPopup) {
 export function deleteCard(cardElement) {
   cardElement.remove();
 }
-const placesList = document.querySelector('.places__list');
-
-function renderCards(cards) {
-  cards.forEach(cardData => {
-      const cardElement = createCard(cardData, deleteCard, likeCard, showImgPopup);
-      placesList.append(cardElement);
-  });
-}
-
-renderCards(initialCards);
