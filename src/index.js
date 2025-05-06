@@ -4,12 +4,13 @@ import {
 } from "./components/modal.js";
 import {
   createCard,
-  deleteCard
+  deleteCard,
+  likeCard
 } from "./components/card.js";
 import {
   initialCards
 } from "./components/cards.js";
-import "./pages/index.css";
+import "./pages/index.css"
 
 const placesList = document.querySelector(".places__list");
 
@@ -22,7 +23,11 @@ const jobInput = editForm.querySelector(".popup__input_type_description");
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
 const editSaveButton = editPopup.querySelector(".popup__button");
-
+const cardActionHandlers = {
+  handleDelete: deleteCard,
+  likeCard: likeCard,
+  handleImageClick: showImgPopup
+};
 // Popup редактирования профиля
 profileEditButton.addEventListener("click", () => {
   openModal(editPopup);
@@ -62,32 +67,33 @@ const addSaveButton = addCardPopup.querySelector(".popup__button");
 openAddButton.addEventListener("click", () => {
   openModal(addCardPopup);
   addForm.reset();
+  addSaveButton.disabled = false;
 });
 
 closeAddButton.addEventListener("click", () => {
   closeModal(addCardPopup);
 });
 
-function showImgPopup(evt) {
+function showImgPopup(imageUrl, imageAlt) {
   openModal(imgPopup);
-  zoomedPopupImage.setAttribute("src", evt.target.src);
-  zoomedPopupImage.setAttribute("alt", evt.target.alt);
-  imgPopupCaption.textContent = evt.target.alt;
-};
+  zoomedPopupImage.setAttribute("src", imageUrl);
+  zoomedPopupImage.setAttribute("alt", imageAlt);
+  imgPopupCaption.textContent = imageAlt;
+}
 
 function handleAddForm(evt) {
   evt.preventDefault();
   const cardValue = cardInput.value;
   const linkValue = linkInput.value;
-  cardInput.textContent = cardValue;
-  linkInput.textContent = linkValue;
+  // cardInput.textContent = cardValue;
+  // linkInput.textContent = linkValue;
   const newCardData = {
       name: cardValue,
       link: linkValue,
       likes: []
   };
   
-  const newCardElement = createCard(newCardData, deleteCard, showImgPopup);
+  const newCardElement = createCard(newCardData, cardActionHandlers);
   placesList.prepend(newCardElement);
   addSaveButton.disabled = true;
 
@@ -106,13 +112,9 @@ closePhotoButton.addEventListener("click", () => {
   closeModal(imgPopup);
 });
 
-export function likeCard(likeButton) {
-  likeButton.classList.toggle("card__like-button_is-active");
-}
-
 function renderCards(cards) {
   cards.forEach(cardData => {
-      const cardElement = createCard(cardData, deleteCard, likeCard, showImgPopup);
+      const cardElement = createCard(cardData, cardActionHandlers);
       placesList.append(cardElement);
   });
 }
