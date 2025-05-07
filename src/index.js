@@ -32,6 +32,7 @@ const cardActionHandlers = {
 profileEditButton.addEventListener("click", () => {
   openModal(editPopup);
   fillPopupEditInputs();
+  editSaveButton.disabled = false;
 });
 
 closeEditButton.addEventListener("click", () => {
