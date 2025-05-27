@@ -28,10 +28,11 @@ export function createCard(cardData, cardTemplate, likeCard, showImgPopup, openD
 if (cardData.owner._id !== profileId) {
     deleteButton.classList.add("card__delete-button-unactive");
   } else {
-    deleteButton.addEventListener("click", () => {
+    cardElement.addEventListener("click", () => {
       currentCardId = cardId;
-      currentDeleteButton = deleteButton;
+      currentCardElement = cardElement;
       openDeletePopup();
+
     });
   }
 
@@ -55,7 +56,7 @@ export function likeCard(likeButton, likeCounter, cardId) {
 }
 
 let currentCardId;
-let currentDeleteButton;
+let currentCardElement;
 export function deleteCard() {
-  return { cardId: currentCardId, deleteButton: currentDeleteButton };
+  return { cardId: currentCardId, cardElement: currentCardElement };
 }
