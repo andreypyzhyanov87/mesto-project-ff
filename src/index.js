@@ -98,22 +98,23 @@ const showLoading = (isLoading, button) => {
 
 // Popup удаления карточки с сервера
 const deletePopup = document.querySelector(".popup_type_delete");
-const deleteForm = document.querySelector('form[name="delete-card"');
+const deleteForm = document.querySelector('form[name="delete-card"]');
+const closeDeleteButton = deletePopup.querySelector(".popup__close");
 
 const openDeletePopup = () => {
   openModal(deletePopup);
 };
 
-const closeDeletePopup = () => {
+closeDeleteButton.addEventListener("click", () => {
   closeModal(deletePopup);
-};
+});
 
 // Функция удаления карточки
 function deleteThisCard({ cardId, cardElement }) {
   deleteMyCard(cardId)
     .then(() => {
       cardElement.remove();
-      closeDeletePopup();
+      closeModal(deletePopup);
     })
     .catch((err) => {
       console.log(err);
@@ -132,8 +133,8 @@ deleteForm.addEventListener("submit", handleDeleteForm);
 profileEditButton.addEventListener("click", () => {
   openModal(editPopup);
   fillPopupEditInputs();
-  editSaveButton.disabled = false;
   clearValidation(editForm, validationConfig);
+  editSaveButton.disabled = false;
 });
 
 closeEditButton.addEventListener("click", () => {
